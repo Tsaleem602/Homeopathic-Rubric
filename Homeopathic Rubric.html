@@ -1,0 +1,2033 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"></meta>
+    <title>Homeo Modern Rubrics</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"></link>
+    <!-- Include jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+            --warning-color: #ff9800;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --border-radius: 6px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+      .welcome-header {
+    margin-bottom: 10px; /* Reduced from 20px */
+}
+
+.navigation-hint {
+    color: #4CAF50; /* Green text */
+    background-color: #E1F5FE; /* Light blue background */
+    font-size: 1rem;
+    margin: 0 auto 20px auto; /* Center horizontally */
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-shadow: none;
+    animation: fadeInPulse 2s ease-in-out 1.5s forwards;
+    opacity: 0;
+    display: inline-flex; /* Changed from flex to inline-flex */
+    align-items: center;
+    gap: 8px;
+    justify-content: center; /* Center content horizontally */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.keyboard-key {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #B3E5FC; /* Slightly darker blue for keys */
+    color: #0288D1; /* Blue text for keys */
+    border-radius: 4px;
+    border: 1px solid #81D4FA;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+}
+
+@keyframes fadeInPulse {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.keyboard-key {
+    display: inline-block;
+    padding: 2px 6px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.3);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255,255,255,0.4);
+    }
+    70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 4px rgba(255,255,255,0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255,255,255,0);
+    }
+}
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Welcome Screen Styles */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #166088, #4a6fa5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s ease-out;
+            padding: 20px;
+            text-align: center;
+            transition: opacity 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .welcome-header {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            animation: slideDown 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        @media (min-width: 768px) {
+            .welcome-header {
+                font-size: 3.5rem;
+            }
+        }
+
+        @keyframes slideDown {
+            from { 
+                transform: translateY(-50px); 
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0); 
+                opacity: 1;
+            }
+        }
+
+        .welcome-description {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.9);
+            max-width: 600px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Courier New', monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid white;
+            line-height: 1.5;
+            width: 0;
+            opacity: 0;
+            animation: 
+                fadeInText 0.5s ease-out 0.8s forwards,
+                typing 4s steps(40) 1.3s forwards;
+        }
+
+        @media (min-width: 768px) {
+            .welcome-description {
+                font-size: 1.5rem;
+            }
+        }
+
+        @keyframes fadeInText {
+            to { opacity: 1; }
+        }
+
+        @keyframes typing {
+            to { width: 100%; }
+        }
+
+        @keyframes blinkCursor {
+            from, to { border-right-color: transparent; }
+            50% { border-right-color: white; }
+        }
+
+        .logo-container {
+            margin: 30px 0;
+            width: 150px;
+            height: 150px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out 5.3s forwards;
+        }
+
+        .logo {
+            width: 100%;
+            height: 100%;
+            background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2ZARgSnOeHFd4vPd776Lr_0rc65ocD2OWVbgyJ79kC6sPIrODwhzzwkAXHJhOgbMCAM9rOldYUCxcqbvS5lBShBmD53rjeXJm19l1zMRPPN2ZnSxu9pfrX3HtsdKLEBrA1YX_PD2H98HMIVmpGxnGU3QS1WKZoN-A_Cr2Gfp73wlQcyPlxNf8-tNullGU/s320/hahneman-removebg-preview.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .dev-stamp {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+            text-align: right;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out 5.6s forwards;
+            font-family: 'Bahnschrift SemiBold', sans-serif;
+            font-style: italic;
+        }
+
+        @media (max-width: 480px) {
+            .dev-stamp {
+                font-size: 0.8rem;
+                bottom: 10px;
+                right: 10px;
+            }
+        }
+
+        .dev-stamp a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Main App Styles */
+        .app-container {
+            display: none;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #f5f7fa;
+        }
+
+        /* App Header - Hidden on mobile */
+        .app-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            .app-header {
+                display: none;
+            }
+        }
+
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-btn {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .header-btn:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .app-header {
+                padding: 10px 15px;
+            }
+            .app-title {
+                font-size: 1.2rem;
+            }
+            .header-btn {
+                font-size: 0.9rem;
+                padding: 4px 8px;
+            }
+        }
+
+        /* Control Panel Styles */
+        .control-panel {
+            background-color: white;
+            padding: 10px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .category-select, .search-input, .finalise-btn, .refresh-btn, .expand-btn {
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .category-select {
+            background-color: white;
+            border: 1px solid #ddd;
+            min-width: 180px;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            border: 1px solid #ddd;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.25);
+        }
+
+        .finalise-btn, .refresh-btn {
+            background-color: var(--info-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        .finalise-btn:hover, .refresh-btn:hover {
+            background-color: #138496;
+        }
+
+        .finalise-btn {
+            display: none;
+        }
+
+        /* Mobile View Matched Remedies Button */
+        .view-matched-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--info-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            z-index: 50;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border: none;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .view-matched-btn {
+                display: block;
+            }
+        }
+
+        /* Back to Rubrics Button (Mobile) */
+        .back-to-rubrics, .finalise-mobile-btn {
+            display: none;
+            position: fixed;
+            background-color: var(--info-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            z-index: 1000;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-to-rubrics {
+            top: 10px;
+            left: 10px;
+        }
+
+        .finalise-mobile-btn {
+            bottom: 20px;
+            right: 20px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .back-to-rubrics {
+                display: block;
+            }
+        }
+
+        /* Mobile Help/About buttons */
+        .mobile-help-buttons {
+            display: none;
+            position: absolute;
+            top: -40px;
+            right: 0;
+            z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-help-buttons {
+                display: flex;
+                gap: 5px;
+                position: relative;
+                top: 0;
+                margin-bottom: 8px;
+            }
+            
+            .mobile-help-btn {
+                background-color: var(--info-color);
+                color: white;
+                border: none;
+                padding: 6px 12px;
+                border-radius: var(--border-radius);
+                font-size: 14px;
+                cursor: pointer;
+            }
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .rubrics-section,
+            .remedies-section {
+                width: 100%;
+                height: 50vh;
+                overflow-y: auto;
+            }
+
+            .expand-section-btn {
+                display: none;
+            }
+            
+            /* Fullscreen remedies on mobile */
+            .remedies-section.fullscreen {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                z-index: 999;
+                background: white;
+                padding-top: 50px;
+            }
+        }
+
+        /* Section Styles */
+        .rubrics-section, .remedies-section {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: white;
+            position: relative;
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .remedies-section {
+            background-color: #f8f9fa;
+            border-left: 1px solid #e0e0e0;
+        }
+
+        /* Remedies count flags */
+        .remedies-count-flags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .count-flag {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .count-flag.matched-flag {
+            background-color: var(--primary-color);
+        }
+
+        .count-flag.selected-flag {
+            background-color: var(--success-color);
+        }
+
+        /* List Styles */
+        .rubric-list, .remedy-list {
+            list-style: none;
+        }
+
+        .rubric-item {
+            background: white;
+            margin-bottom: 6px;
+            padding: 10px 12px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            border-left: 4px solid transparent;
+        }
+
+        .rubric-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .rubric-item.selected {
+            border-left: 4px solid var(--primary-color);
+            background-color: #f0f7ff;
+        }
+
+        .remedy-item {
+            background: white;
+            margin-bottom: 8px;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .remedy-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .remedy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .remedy-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--secondary-color);
+        }
+
+        .remedy-grade {
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .grade-1-2 {
+            background-color: var(--warning-color);
+        }
+
+        .grade-3-4 {
+            background-color: var(--primary-color);
+        }
+
+        .grade-5-plus {
+            background-color: #e91e63;
+        }
+
+        .prescription-fields {
+            margin-top: 8px;
+            padding: 8px;
+            background-color: #f0f8ff;
+            border-radius: var(--border-radius);
+        }
+
+        .prescription-field {
+            margin-bottom: 6px;
+        }
+
+        .prescription-field label {
+            display: block;
+            margin-bottom: 2px;
+            font-size: 12px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .prescription-field input, .prescription-field textarea {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .prescription-field textarea {
+            min-height: 50px;
+            resize: vertical;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            animation: modalopen 0.3s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        @keyframes modalopen {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            color: var(--danger-color);
+        }
+
+        .modal-title {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            padding-right: 30px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 8px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .modal-btn {
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-btn-primary {
+            background-color: var(--info-color);
+            color: white;
+        }
+
+        .modal-btn-primary:hover {
+            background-color: #138496;
+        }
+
+        .modal-btn-secondary {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+        }
+
+        .modal-btn-secondary:hover {
+            background-color: #e9ecef;
+        }
+
+        .dev-stamp-app {
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed #ddd;
+            font-family: 'Bahnschrift SemiBold', sans-serif;
+            font-style: italic;
+        }
+
+        .dev-stamp-app a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        /* Other Elements */
+        .no-results {
+            text-align: center;
+            padding: 30px 15px;
+            color: #7f8c8d;
+            font-size: 15px;
+        }
+
+        .selected-count {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 1px 6px;
+            border-radius: 10px;
+            font-size: 11px;
+            margin-left: 4px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .notification {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            color: white;
+            font-weight: 500;
+            box-shadow: var(--box-shadow);
+            z-index: 1100;
+            transform: translateX(200%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background-color: var(--success-color);
+        }
+
+        .notification.error {
+            background-color: var(--danger-color);
+        }
+
+        .notification.info {
+            background-color: var(--info-color);
+        }
+
+        .notification.warning {
+            background-color: var(--warning-color);
+            color: var(--dark-color);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .current-date {
+            font-size: 13px;
+            color: #555;
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        .file-input-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background-color: var(--info-color);
+            color: white;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+        
+        .file-input-button:hover {
+            background-color: #138496;
+        }
+        
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Alternate background colors for rubrics in finalize modal */
+        .rubric-bg-0 { background-color: #f8f9fa; }
+        .rubric-bg-1 { background-color: #e9f7fe; }
+        .rubric-bg-2 { background-color: #f0fff0; }
+        .rubric-bg-3 { background-color: #fff8e1; }
+        .rubric-bg-4 { background-color: #f9f0ff; }
+
+        /* Remedy status flags */
+        .remedy-status {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .status-flag {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .matched-flag {
+            background-color: var(--primary-color);
+        }
+
+        .selected-flag {
+            background-color: var(--success-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <h1 class="welcome-header">Homeo Modern Rubrics</h1>
+        <div class="welcome-description">A Precise Homeo Prescription</div>
+        <div class="logo-container">
+            <div class="logo"></div>
+        </div>
+        <div class="dev-stamp">
+            Developed by: Hdr Tahir Saleem KTK<br />
+            WhatsApp: <a href="https://wa.me/923439796229">0343-9796229</a>
+        </div>
+        <!-- Hidden Start Button for auto trigger -->
+        <button id="hiddenStartBtn" onclick="transitionToApp()" style="display: none;"></button>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container" id="appContainer">
+        <!-- App Header - Hidden on mobile -->
+        <header class="app-header">
+            <div class="app-title">Homeo Modern Rubrics</div>         
+            <div class="current-date" id="currentDate" style="color: #FFF; font-size: 14px;"></div>
+            <div class="header-actions">
+                <button class="header-btn" id="helpBtn">
+                    <i class="fas fa-question-circle"></i> Help
+                </button>
+                <button class="header-btn" id="aboutBtn">
+                    <i class="fas fa-info-circle"></i> About
+                </button>
+              
+            </div>
+          
+        </header>
+      
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <!-- Mobile Help/About Buttons -->
+            <div class="mobile-help-buttons">
+                <button class="mobile-help-btn" id="mobileHelpBtn">
+                    <i class="fas fa-question-circle"></i> User Guide
+                </button>
+                <button class="mobile-help-btn" id="mobileAboutBtn">
+                    <i class="fas fa-info-circle"></i> About Us
+                </button>
+            </div>
+
+            <div class="filter-group">
+                <select class="category-select" id="categorySelect">
+                    <option value="">All Categories</option>
+                    <option value="MIND">Mind</option>
+                    <option value="HEAD">Head</option>
+                    <option value="EYE">Eye</option>
+                    <option value="EAR">Ear</option>
+                    <option value="NOSE">Nose</option>
+                    <option value="FACE">Face</option>
+                    <option value="MOUTH">Mouth</option>
+                    <option value="THROAT">Throat</option>
+                    <option value="STOMACH">Stomach</option>
+                    <option value="ABDOMEN">Abdomen</option>
+                    <option value="RECTUM">Rectum</option>
+                    <option value="STOOL">Stool</option>
+                    <option value="URINE">Urine</option>
+                    <option value="MALE">Male</option>
+                    <option value="FEMALE">Female</option>
+                    <option value="CHEST">Chest</option>
+                    <option value="BACK">Back</option>
+                    <option value="EXTREMITIES">Extremities</option>
+                    <option value="SLEEP">Sleep</option>
+                    <option value="FEVER">Fever</option>
+                    <option value="SKIN">Skin</option>
+                    <option value="GENERALITIES">Generalities</option>
+                </select>
+
+                <input class="search-input" id="searchInput" placeholder="Search rubrics..." type="text" />
+            </div>
+
+            <div class="file-input-wrapper">
+                <button class="file-input-button" id="importBtn">
+                    <i class="fas fa-file-import"></i> Import
+                </button>
+                <input accept=".json" class="file-input" id="fileInput" type="file" />
+            </div>
+            <button class="refresh-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
+            <button class="finalise-btn" id="finaliseBtn"><i class="fas fa-check-circle"></i> Finalize Remedies</button>
+        </div>
+
+        <div class="main-content">
+            <div class="rubrics-section" id="rubricsSection">
+                <div class="section-title">Rubrics</div>
+                <ul class="rubric-list" id="rubricList">
+                    <!-- Rubrics will be populated here -->
+                </ul>
+            </div>
+
+            <button class="expand-section-btn right" id="expandRubricsBtn" title="Expand section">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <button class="expand-section-btn left" id="expandRemediesBtn" title="Expand section">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <div class="remedies-section" id="remediesSection">
+                <div class="section-title">Remedies</div>
+                <div class="remedies-count-flags">
+                    <span class="count-flag matched-flag">Matched Remedies: <span id="matchedCount">0</span></span>
+                    <span class="count-flag selected-flag">Selected Remedies: <span id="selectedCount">0</span></span>
+                </div>
+                <ul class="remedy-list" id="remedyList">
+                    <!-- Remedies will be populated here -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Mobile View Matched Remedies Button -->
+        <button class="view-matched-btn" id="viewMatchedBtn">
+            <i class="fas fa-list"></i> View Matched Remedies
+        </button>
+
+        <!-- Back to Rubrics Button (Mobile) -->
+        <button class="back-to-rubrics" id="backToRubricsBtn">
+            <i class="fas fa-arrow-left"></i> Back to Rubrics
+        </button>
+
+        <!-- Finalize Button (Mobile) -->
+        <button class="finalise-mobile-btn" id="finaliseMobileBtn">
+            <i class="fas fa-check-circle"></i> Finalize
+        </button>
+    </div>
+
+    <!-- Import Modal -->
+    <div class="modal" id="importModal">
+        <div class="modal-content">
+            <span class="close-btn">×</span>
+            <h2 class="modal-title">Import Repertory</h2>
+            <p>Paste your repertory JSON data below:</p>
+            <textarea id="importTextarea" style="border-radius: var(--border-radius); border: 1px solid #ddd; height: 300px; margin: 15px 0; padding: 10px; width: 100%;"></textarea>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-secondary" id="cancelImport">Cancel</button>
+                <button class="modal-btn modal-btn-primary" id="confirmImport">Import</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Finalise Modal -->
+    <div class="modal" id="finaliseModal">
+        <div class="modal-content">
+            <span class="close-btn">×</span>
+            <h2 class="modal-title">Finalize Prescription</h2>
+            <div id="prescriptionDate" style="color: #666666; margin-bottom: 15px;"></div>
+            <div id="prescriptionSummary">
+                <!-- Prescription summary will be shown here -->
+            </div>
+            <div class="modal-actions">
+                <div class="dev-stamp-app">
+                    Developed by: Hdr Tahir Saleem KTK<br />
+                    WhatsApp: <a href="https://wa.me/923439796229">0343-9796229</a>
+                </div>
+                <div class="modal-buttons">
+                    <button class="modal-btn modal-btn-secondary" id="cancelFinalise">Cancel</button>
+                    <button class="modal-btn modal-btn-primary" id="confirmFinalise"><i class="fas fa-file-pdf"></i> Generate PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <span class="close-btn">×</span>
+            <h2 class="modal-title">User Guide</h2>
+            <div style="margin-bottom: 15px;">
+                <h3>How to use this application:</h3>
+                <ol style="margin-left: 20px; margin-top: 10px;">
+                    <li style="margin-bottom: 10px;">Select a category from the dropdown to filter rubrics</li>
+                    <li style="margin-bottom: 10px;">Use the search box to find specific rubrics</li>
+                    <li style="margin-bottom: 10px;">Click on rubrics to select them (they will turn blue)</li>
+                    <li style="margin-bottom: 10px;">On mobile: Tap "View Matched Remedies" to see suggested remedies</li>
+                    <li style="margin-bottom: 10px;">Check the remedies you want to prescribe</li>
+                    <li style="margin-bottom: 10px;">Enter potency, dosage and notes for each selected remedy</li>
+                    <li style="margin-bottom: 10px;">Click "Finalize Remedies" to generate your prescription</li>
+                </ol>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary" id="closeHelp">Got it!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal" id="aboutModal">
+        <div class="modal-content">
+            <span class="close-btn">×</span>
+            <h2 class="modal-title">About Us</h2>
+            <div style="margin-bottom: 15px;">
+                <p>This application is designed to assist homeopathic practitioners in analyzing cases and finding the most appropriate remedies based on selected rubrics.</p>
+                <p>The system uses a modern approach to rubric selection and remedy grading to provide accurate suggestions.</p>
+                <p>Version: 1.0.0</p>
+                <p>Last updated: July 2023</p>
+            </div>
+            <div class="dev-stamp-app">
+                Developed by: Hdr Tahir Saleem KTK<br />
+                WhatsApp: <a href="https://wa.me/923439796229">0343-9796229</a>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary" id="closeAbout">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <script>
+        // Initialize jsPDF
+        const { jsPDF } = window.jspdf;
+
+        // Current date display
+        function updateCurrentDate() {
+            const now = new Date();
+            const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+            
+            // Set prescription date in modal
+            const prescriptionDate = document.getElementById('prescriptionDate');
+            if (prescriptionDate) {
+                prescriptionDate.textContent = now.toLocaleDateString('en-US', { 
+                    weekday: 'short', 
+                    day: 'numeric', 
+                    month: 'short', 
+                    year: 'numeric'
+                });
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            container.appendChild(notification);
+            
+            // Trigger reflow to restart animation
+            void notification.offsetWidth;
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    container.removeChild(notification);
+                }, 300);
+            }, duration);
+        }
+
+        // Rubric data with initial values
+        let rubricData = [
+            {
+                "id": "FEMALE__DISCHARGES__STRINGY",
+                "name": "Female - Discharges - stringy",
+                "remedies": [
+                    { "name": "Hydrastis", "grade": 2 },
+                    { "name": "Sepia", "grade": 2 }
+                ]
+            },
+            {
+                "id": "FEMALE__SENSATION__PRESSURE__FROM_INSIDE_OUT",
+                "name": "Female - Sensation - pressure from inside out",
+                "remedies": [
+                    { "name": "Lilium tigrinum", "grade": 3 },
+                    { "name": "Sepia", "grade": 2 }
+                ]
+            },
+            {
+                "id": "FEMALE__PAIN__TUGGING__DURING_MENSES",
+                "name": "Female - Pain - tugging - during menses",
+                "remedies": [
+                    { "name": "Belladonna", "grade": 2 },
+                    { "name": "Magnesium phosphoricum", "grade": 2 }
+                ]
+            },
+            {
+                "id": "FEMALE__WALKING__AGGRAVATES_MENSES",
+                "name": "Female - Walking - aggravates menses",
+                "remedies": [
+                    { "name": "Sepia", "grade": 2 },
+                    { "name": "Lilium tigrinum", "grade": 2 }
+                ]
+            },
+            {
+                "id": "FEMALE__PAIN__BEARING_DOWN__BEFORE_MENSES",
+                "name": "Female - Pain - bearing down - before menses",
+                "remedies": [
+                    { "name": "Sepia", "grade": 3 },
+                    { "name": "Lilium tigrinum", "grade": 2 }
+                ]
+            }, 
+            {
+                "id": "BACK__ACHE__CERVICAL_REGION",
+                "name": "Back - Ache - cervical region",
+                "remedies": [
+                    { "name": "Cimicifuga", "grade": 3 },
+                    { "name": "Rhus toxicodendron", "grade": 2 }
+                ]
+            },
+            {
+                "id": "BACK__ACHE__DORSAL_REGION",
+                "name": "Back - Ache - dorsal region",
+                "remedies": [
+                    { "name": "Bryonia", "grade": 3 },
+                    { "name": "Arnica", "grade": 2 }
+                ]
+            },
+            {
+                "id": "BACK__ACHE__LUMBOSACRAL_REGION",
+                "name": "Back - Ache - lumbosacral region",
+                "remedies": [
+                    { "name": "Rhus toxicodendron", "grade": 3 },
+                    { "name": "Calcarea fluorica", "grade": 2 }
+                ]
+            },
+            {
+                "id": "MIND__ANXIETY__HEALTH__ABOUT",
+                "name": "Mind - Anxiety - health, about",
+                "remedies": [
+                    { "name": "Arsenicum album", "grade": 3 },
+                    { "name": "Calcarea carbonica", "grade": 2 }
+                ]
+            },
+            {
+                "id": "MIND__FEAR__DEATH__OF",
+                "name": "Mind - Fear - death, of",
+                "remedies": [
+                    { "name": "Aconitum napellus", "grade": 3 },
+                    { "name": "Arsenicum album", "grade": 2 }
+                ]
+            }
+        ];
+
+        // DOM elements
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const appContainer = document.getElementById('appContainer');
+        const categorySelect = document.getElementById('categorySelect');
+        const searchInput = document.getElementById('searchInput');
+        const rubricList = document.getElementById('rubricList');
+        const remedyList = document.getElementById('remedyList');
+        const matchedCount = document.getElementById('matchedCount');
+        const selectedCount = document.getElementById('selectedCount');
+        const importBtn = document.getElementById('importBtn');
+        const fileInput = document.getElementById('fileInput');
+        const finaliseBtn = document.getElementById('finaliseBtn');
+        const finaliseMobileBtn = document.getElementById('finaliseMobileBtn');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const expandRubricsBtn = document.getElementById('expandRubricsBtn');
+        const expandRemediesBtn = document.getElementById('expandRemediesBtn');
+        const rubricsSection = document.getElementById('rubricsSection');
+        const remediesSection = document.getElementById('remediesSection');
+        const importModal = document.getElementById('importModal');
+        const finaliseModal = document.getElementById('finaliseModal');
+        const helpModal = document.getElementById('helpModal');
+        const aboutModal = document.getElementById('aboutModal');
+        const importTextarea = document.getElementById('importTextarea');
+        const cancelImport = document.getElementById('cancelImport');
+        const confirmImport = document.getElementById('confirmImport');
+        const cancelFinalise = document.getElementById('cancelFinalise');
+        const confirmFinalise = document.getElementById('confirmFinalise');
+        const prescriptionSummary = document.getElementById('prescriptionSummary');
+        const helpBtn = document.getElementById('helpBtn');
+        const aboutBtn = document.getElementById('aboutBtn');
+        const closeHelp = document.getElementById('closeHelp');
+        const closeAbout = document.getElementById('closeAbout');
+        const viewMatchedBtn = document.getElementById('viewMatchedBtn');
+        const backToRubricsBtn = document.getElementById('backToRubricsBtn');
+        const mobileHelpBtn = document.getElementById('mobileHelpBtn');
+        const mobileAboutBtn = document.getElementById('mobileAboutBtn');
+
+        // State variables
+        let selectedRubrics = [];
+        let selectedRemedies = [];
+        let filteredRubrics = [];
+        let expandedSection = null;
+        let welcomeScreenTimeout;
+
+        // Initialize the application
+        function init() {
+            updateCurrentDate();
+            loadFromLocalStorage();
+          loadRubricFromPost("https://naturalhealingus.blogspot.com/p/modern-homeo-rubric-data.html");
+
+
+            // Automatically transition after 6 seconds
+            welcomeScreenTimeout = setTimeout(transitionToApp, 6000);
+
+            // Instantly complete animations (optional cleanup)
+            const welcomeHeader = document.querySelector('.welcome-header');
+            const welcomeDescription = document.querySelector('.welcome-description');
+            const logoContainer = document.querySelector('.logo-container');
+            const devStamp = document.querySelector('.dev-stamp');
+
+            welcomeHeader.style.animation = 'none';
+            welcomeHeader.style.opacity = '1';
+            welcomeHeader.style.transform = 'translateY(0)';
+
+            welcomeDescription.style.animation = 'none';
+            welcomeDescription.style.opacity = '1';
+            welcomeDescription.style.width = '100%';
+            welcomeDescription.style.borderRightColor = 'transparent';
+
+            logoContainer.style.animation = 'none';
+            logoContainer.style.opacity = '1';
+
+            devStamp.style.animation = 'none';
+            devStamp.style.opacity = '1';
+        }
+
+        // Transition to main app
+        function transitionToApp() {
+            clearTimeout(welcomeScreenTimeout); // Good safeguard
+
+            welcomeScreen.style.opacity = '0';
+            setTimeout(() => {
+                welcomeScreen.style.display = 'none';
+                appContainer.style.display = 'flex';
+
+                // Initialize app functionality
+                filterAndDisplayRubrics();
+                setupEventListeners();
+            }, 500); // Match fade-out
+        }
+
+        // Load data from localStorage if available
+        function loadFromLocalStorage() {
+            const savedData = localStorage.getItem('homeopathicRubricSystem');
+            if (savedData) {
+                try {
+                    const parsedData = JSON.parse(savedData);
+                    rubricData = parsedData.rubricData || rubricData;
+                    // Don't load selected rubrics/remedies - they should be fresh on each load
+                    showNotification('Previous repertory data restored', 'success');
+                } catch (e) {
+                    console.error("Error loading saved data:", e);
+                    showNotification('Error loading saved data', 'error');
+                }
+            }
+        }
+
+        // Save data to localStorage
+        function saveToLocalStorage() {
+            const dataToSave = {
+                rubricData,
+                selectedRubrics,
+                selectedRemedies
+            };
+            localStorage.setItem('homeopathicRubricSystem', JSON.stringify(dataToSave));
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+          
+          // Add keyboard navigation for rubrics
+document.addEventListener('keydown', function(e) {
+    if (document.activeElement === searchInput || document.activeElement === categorySelect) {
+        return; // Don't interfere with form controls
+    }
+
+    const rubricItems = Array.from(document.querySelectorAll('.rubric-item'));
+    const currentIndex = rubricItems.findIndex(item => item === document.activeElement);
+
+    if (e.key === 'Tab') {
+        e.preventDefault();
+        if (rubricItems.length === 0) return;
+
+        let nextIndex;
+        if (e.shiftKey) {
+            // Shift+Tab - move up
+            nextIndex = currentIndex <= 0 ? rubricItems.length - 1 : currentIndex - 1;
+        } else {
+            // Tab - move down
+            nextIndex = currentIndex >= rubricItems.length - 1 ? 0 : currentIndex + 1;
+        }
+
+        rubricItems[nextIndex].focus();
+    } else if (e.key === 'Enter' && currentIndex >= 0) {
+        // Simulate click on focused rubric
+        rubricItems[currentIndex].click();
+    }
+});
+          
+            // Search and filter
+            searchInput.addEventListener('input', filterAndDisplayRubrics);
+            categorySelect.addEventListener('change', filterAndDisplayRubrics);
+
+            // File import - properly handled to prevent accidental triggering
+            importBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                fileInput.click();
+            });
+            
+            fileInput.addEventListener('change', handleFileImport);
+
+            // Rubric selection
+            rubricList.addEventListener('click', function(e) {
+                const rubricItem = e.target.closest('.rubric-item');
+                if (rubricItem) {
+                    const rubricId = rubricItem.dataset.id;
+                    const rubric = filteredRubrics.find(r => r.id === rubricId);
+                    if (rubric) {
+                        toggleRubricSelection(rubric);
+                    }
+                }
+            });
+
+            // Import functionality
+            cancelImport.addEventListener('click', function() {
+                importModal.style.display = 'none';
+            });
+
+            confirmImport.addEventListener('click', importRepertory);
+
+            // Finalise functionality
+            finaliseBtn.addEventListener('click', showFinaliseModal);
+            finaliseMobileBtn.addEventListener('click', showFinaliseModal);
+            cancelFinalise.addEventListener('click', function() {
+                finaliseModal.style.display = 'none';
+            });
+
+            confirmFinalise.addEventListener('click', generatePDF);
+
+            // Refresh functionality
+            refreshBtn.addEventListener('click', function() {
+                selectedRubrics = [];
+                selectedRemedies = [];
+                filterAndDisplayRubrics();
+                updateRemedyList();
+                updateRemedyCounts();
+                saveToLocalStorage();
+                showNotification('Selection cleared', 'info');
+            });
+
+            // Page reload handler
+            window.addEventListener('beforeunload', function() {
+                // Clear selections before reload
+                selectedRubrics = [];
+                selectedRemedies = [];
+                saveToLocalStorage();
+            });
+
+            // Expand sections
+            expandRubricsBtn.addEventListener('click', function() {
+                toggleExpandSection('rubrics');
+            });
+
+            expandRemediesBtn.addEventListener('click', function() {
+                toggleExpandSection('remedies');
+            });
+
+            // Mobile view matched remedies button
+            viewMatchedBtn.addEventListener('click', function() {
+                remediesSection.classList.add('fullscreen');
+                backToRubricsBtn.style.display = 'block';
+                finaliseMobileBtn.style.display = 'block';
+            });
+
+            // Mobile back to rubrics button
+            backToRubricsBtn.addEventListener('click', function() {
+                remediesSection.classList.remove('fullscreen');
+                backToRubricsBtn.style.display = 'none';
+                finaliseMobileBtn.style.display = 'none';
+            });
+
+            // Help and About buttons
+            helpBtn.addEventListener('click', function() {
+                helpModal.style.display = 'block';
+            });
+
+            aboutBtn.addEventListener('click', function() {
+                aboutModal.style.display = 'block';
+            });
+
+            mobileHelpBtn.addEventListener('click', function() {
+                helpModal.style.display = 'block';
+            });
+
+            mobileAboutBtn.addEventListener('click', function() {
+                aboutModal.style.display = 'block';
+            });
+
+            closeHelp.addEventListener('click', function() {
+                helpModal.style.display = 'none';
+            });
+
+            closeAbout.addEventListener('click', function() {
+                aboutModal.style.display = 'none';
+            });
+
+            // Close modals when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === importModal) {
+                    importModal.style.display = 'none';
+                }
+                if (event.target === finaliseModal) {
+                    finaliseModal.style.display = 'none';
+                }
+                if (event.target === helpModal) {
+                    helpModal.style.display = 'none';
+                }
+                if (event.target === aboutModal) {
+                    aboutModal.style.display = 'none';
+                }
+            });
+        }
+
+        // Toggle expanded section
+        function toggleExpandSection(section) {
+            if (expandedSection === section) {
+                // Collapse if already expanded
+                rubricsSection.classList.remove('expanded');
+                remediesSection.classList.remove('expanded');
+                expandedSection = null;
+            } else {
+                // Expand the requested section
+                rubricsSection.classList.toggle('expanded', section === 'rubrics');
+                remediesSection.classList.toggle('expanded', section === 'remedies');
+                expandedSection = section;
+            }
+            
+            // Update arrow directions
+            if (section === 'rubrics' && rubricsSection.classList.contains('expanded')) {
+                expandRubricsBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            } else {
+                expandRubricsBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            }
+            
+            if (section === 'remedies' && remediesSection.classList.contains('expanded')) {
+                expandRemediesBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            } else {
+                expandRemediesBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            }
+        }
+
+        // Generate PDF
+        function generatePDF() {
+            const doc = new jsPDF();
+            
+            // Add title
+            doc.setFontSize(18);
+            doc.text('Homeopathic Prescription', 105, 20, { align: 'center' });
+            
+            // Add current date
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', { 
+                weekday: 'short', 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            doc.setFontSize(10);
+            doc.text(`Generated on: ${dateStr}`, 105, 30, { align: 'center' });
+            
+            // Add remedies
+            doc.setFontSize(14);
+            doc.text('Selected Remedies:', 14, 40);
+            
+            let yPos = 50;
+            
+            selectedRemedies.forEach((remedy, index) => {
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'bold');
+                doc.text(`${index + 1}. ${remedy.name} (Grade: ${remedy.totalGrade})`, 14, yPos);
+                doc.setFont(undefined, 'normal');
+                
+                yPos += 7;
+                
+                // Combine potency, dosage and notes in one line
+                let details = [];
+                if (remedy.potency) details.push(`Potency: ${remedy.potency}`);
+                if (remedy.dosage) details.push(`Dosage: ${remedy.dosage}`);
+                if (remedy.note) details.push(`Notes: ${remedy.note}`);
+                
+                if (details.length > 0) {
+                    doc.text(details.join(' | '), 20, yPos);
+                    yPos += 7;
+                }
+                
+                // Add rubrics with alternating background colors
+                doc.text('From rubrics:', 20, yPos);
+                yPos += 7;
+                
+                remedy.rubrics.forEach((rubric, i) => {
+                    doc.setTextColor(0, 0, 0);
+                    doc.text(`- ${rubric}`, 25, yPos);
+                    yPos += 7;
+                });
+                
+                yPos += 5; // Add extra space between remedies
+            });
+            
+            // Add developer stamp at bottom
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text('Developed by: Hdr Tahir Saleem KTK', 14, yPos + 10);
+            doc.text('WhatsApp: 0343-9796229', 14, yPos + 17);
+            
+            // Save the PDF
+            const fileName = `Homeo_Prescription_${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}_${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}.pdf`;
+            doc.save(fileName);
+            
+            showNotification('PDF generated successfully', 'success');
+            finaliseModal.style.display = 'none';
+        }
+
+        // Handle file import
+        function handleFileImport(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const content = e.target.result;
+                    importTextarea.value = content;
+                    importModal.style.display = 'block';
+                } catch (error) {
+                    showNotification('Error reading file', 'error');
+                    console.error('Error reading file:', error);
+                }
+            };
+            reader.onerror = function() {
+                showNotification('Error reading file', 'error');
+            };
+            reader.readAsText(file);
+        }
+
+        // Filter rubrics based on search and category
+        function filterAndDisplayRubrics() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const category = categorySelect.value;
+
+            filteredRubrics = rubricData.filter(rubric => {
+                const matchesSearch = rubric.name.toLowerCase().includes(searchTerm);
+                const matchesCategory = !category || rubric.id.startsWith(category + '__') || 
+                                       (category === 'MIND' && rubric.id.startsWith('MIND__'));
+                return matchesSearch && matchesCategory;
+            });
+
+            displayRubrics();
+        }
+
+        // Display filtered rubrics in the list
+        function displayRubrics() {
+            rubricList.innerHTML = '';
+            
+            if (filteredRubrics.length === 0) {
+                rubricList.innerHTML = '<div class="no-results">No rubrics found matching your search criteria.</div>';
+                return;
+            }
+
+            filteredRubrics.forEach(rubric => {
+                const isSelected = selectedRubrics.some(r => r.id === rubric.id);
+                const li = document.createElement('li');
+                li.className = `rubric-item ${isSelected ? 'selected' : ''}`;
+                li.dataset.id = rubric.id;
+                li.textContent = rubric.name;
+                rubricList.appendChild(li);
+            });
+        }
+
+        // Toggle rubric selection
+        function toggleRubricSelection(rubric) {
+            const index = selectedRubrics.findIndex(r => r.id === rubric.id);
+            
+            if (index === -1) {
+                selectedRubrics.push(rubric);
+                showNotification(`Rubric added: ${rubric.name}`, 'success', 2000);
+            } else {
+                selectedRubrics.splice(index, 1);
+                // Also remove any remedies from this rubric
+                selectedRemedies = selectedRemedies.filter(remedy => 
+                    !rubric.remedies.some(r => r.name === remedy.name)
+                );
+                showNotification(`Rubric removed: ${rubric.name}`, 'info', 2000);
+            }
+
+            // Update the display
+            const rubricElement = rubricList.querySelector(`[data-id="${rubric.id}"]`);
+            if (rubricElement) {
+                rubricElement.classList.toggle('selected', index === -1);
+            }
+
+            updateRemedyList();
+            updateRemedyCounts();
+            saveToLocalStorage();
+        }
+
+        // Update the remedy list based on selected rubrics
+        function updateRemedyList() {
+            // Collect all remedies from selected rubrics
+            const remedyMap = new Map();
+            
+            selectedRubrics.forEach(rubric => {
+                rubric.remedies.forEach(remedy => {
+                    if (!remedyMap.has(remedy.name)) {
+                        remedyMap.set(remedy.name, {
+                            name: remedy.name,
+                            grades: [remedy.grade],
+                            rubrics: [rubric.name],
+                            potency: '',
+                            dosage: '',
+                            note: ''
+                        });
+                    } else {
+                        const existing = remedyMap.get(remedy.name);
+                        existing.grades.push(remedy.grade);
+                        existing.rubrics.push(rubric.name);
+                        remedyMap.set(remedy.name, existing);
+                    }
+                });
+            });
+
+            // Convert to array and calculate total grade
+            const allRemedies = Array.from(remedyMap.values()).map(remedy => {
+                const totalGrade = remedy.grades.reduce((sum, grade) => sum + grade, 0);
+                return {
+                    ...remedy,
+                    totalGrade,
+                    // Get existing prescription data if this remedy was already selected
+                    ...(selectedRemedies.find(r => r.name === remedy.name) || {})
+                };
+            });
+
+            // Sort by total grade (descending) and name
+            allRemedies.sort((a, b) => {
+                if (b.totalGrade !== a.totalGrade) return b.totalGrade - a.totalGrade;
+                return a.name.localeCompare(b.name);
+            });
+
+            // Update the display
+            remedyList.innerHTML = '';
+            if (allRemedies.length === 0) {
+                remedyList.innerHTML = '<div class="no-results">No remedies selected yet. Click on rubrics to select them.</div>';
+                finaliseBtn.style.display = 'none';
+                return;
+            }
+
+            finaliseBtn.style.display = 'inline-block';
+
+            allRemedies.forEach(remedy => {
+                const isSelected = selectedRemedies.some(r => r.name === remedy.name);
+                const li = document.createElement('li');
+                li.className = 'remedy-item';
+                
+                // Header with name, grade, and checkbox
+                const header = document.createElement('div');
+                header.className = 'remedy-header';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'remedy-checkbox';
+                checkbox.checked = isSelected;
+                checkbox.addEventListener('change', function() {
+                    toggleRemedySelection(remedy, this.checked);
+                });
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'remedy-name';
+                nameSpan.textContent = remedy.name;
+                
+                // Determine grade class based on total grade
+                let gradeClass;
+                if (remedy.totalGrade <= 2) gradeClass = 'grade-1-2';
+                else if (remedy.totalGrade <= 4) gradeClass = 'grade-3-4';
+                else gradeClass = 'grade-5-plus';
+                
+                const gradeSpan = document.createElement('span');
+                gradeSpan.className = `remedy-grade ${gradeClass}`;
+                gradeSpan.textContent = remedy.totalGrade;
+                
+                header.appendChild(checkbox);
+                header.appendChild(nameSpan);
+                header.appendChild(gradeSpan);
+                li.appendChild(header);
+                
+                // Prescription fields (shown only when selected)
+                const prescriptionFields = document.createElement('div');
+                prescriptionFields.className = 'prescription-fields';
+                prescriptionFields.style.display = isSelected ? 'block' : 'none';
+                
+                const potencyField = createPrescriptionField('Potency', 'potency', remedy.potency || '');
+                const dosageField = createPrescriptionField('Dosage', 'dosage', remedy.dosage || '');
+                const noteField = createPrescriptionField('Notes', 'note', remedy.note || '', true);
+                
+                potencyField.querySelector('input').addEventListener('change', function() {
+                    updateRemedyPrescription(remedy.name, 'potency', this.value);
+                });
+                
+                dosageField.querySelector('input').addEventListener('change', function() {
+                    updateRemedyPrescription(remedy.name, 'dosage', this.value);
+                });
+                
+                noteField.querySelector('textarea').addEventListener('change', function() {
+                    updateRemedyPrescription(remedy.name, 'note', this.value);
+                });
+                
+                prescriptionFields.appendChild(potencyField);
+                prescriptionFields.appendChild(dosageField);
+                prescriptionFields.appendChild(noteField);
+                
+                li.appendChild(prescriptionFields);
+                
+                remedyList.appendChild(li);
+            });
+        }
+
+        // Create a prescription field element
+        function createPrescriptionField(label, name, value, isTextarea = false) {
+            const container = document.createElement('div');
+            container.className = 'prescription-field';
+            
+            const labelEl = document.createElement('label');
+            labelEl.textContent = label;
+            labelEl.htmlFor = name;
+            
+            let inputEl;
+            if (isTextarea) {
+                inputEl = document.createElement('textarea');
+                inputEl.rows = 3;
+            } else {
+                inputEl = document.createElement('input');
+                inputEl.type = 'text';
+            }
+            
+            inputEl.id = name;
+            inputEl.name = name;
+            inputEl.value = value;
+            
+            container.appendChild(labelEl);
+            container.appendChild(inputEl);
+            
+            return container;
+        }
+
+        // Update remedy counts
+        function updateRemedyCounts() {
+            const remedyMap = new Map();
+            selectedRubrics.forEach(rubric => {
+                rubric.remedies.forEach(remedy => {
+                    if (!remedyMap.has(remedy.name)) {
+                        remedyMap.set(remedy.name, remedy);
+                    }
+                });
+            });
+            
+            matchedCount.textContent = remedyMap.size;
+            selectedCount.textContent = selectedRemedies.length;
+        }
+
+        // Toggle remedy selection
+        function toggleRemedySelection(remedy, isSelected) {
+            if (isSelected) {
+                // Add to selected remedies if not already there
+                if (!selectedRemedies.some(r => r.name === remedy.name)) {
+                    selectedRemedies.push({
+                        name: remedy.name,
+                        totalGrade: remedy.totalGrade,
+                        rubrics: remedy.rubrics,
+                        potency: remedy.potency || '',
+                        dosage: remedy.dosage || '',
+                        note: remedy.note || ''
+                    });
+                    showNotification(`Remedy selected: ${remedy.name}`, 'success', 2000);
+                }
+            } else {
+                // Remove from selected remedies
+                selectedRemedies = selectedRemedies.filter(r => r.name !== remedy.name);
+                showNotification(`Remedy removed: ${remedy.name}`, 'info', 2000);
+            }
+            
+            updateRemedyCounts();
+            saveToLocalStorage();
+            updateRemedyList(); // Refresh to show/hide prescription fields
+        }
+
+        // Update prescription details for a remedy
+        function updateRemedyPrescription(remedyName, field, value) {
+            const remedyIndex = selectedRemedies.findIndex(r => r.name === remedyName);
+            
+            if (remedyIndex !== -1) {
+                selectedRemedies[remedyIndex][field] = value;
+                saveToLocalStorage();
+            }
+        }
+
+        // Import repertory data
+        function importRepertory() {
+            try {
+                const newData = JSON.parse(importTextarea.value);
+                if (!Array.isArray(newData)) {
+                    showNotification('Invalid data format. Please provide a valid JSON array of rubrics.', 'error');
+                    return;
+                }
+                
+                let addedCount = 0;
+                let updatedCount = 0;
+                
+                // Merge new data with existing
+                newData.forEach(newRubric => {
+                    const existingIndex = rubricData.findIndex(r => r.id === newRubric.id);
+                    if (existingIndex === -1) {
+                        rubricData.push(newRubric);
+                        addedCount++;
+                    } else {
+                        // Update existing rubric with new remedies (avoid duplicates)
+                        newRubric.remedies.forEach(newRemedy => {
+                            const remedyExists = rubricData[existingIndex].remedies.some(r => r.name === newRemedy.name);
+                            if (!remedyExists) {
+                                rubricData[existingIndex].remedies.push(newRemedy);
+                                updatedCount++;
+                            }
+                        });
+                    }
+                });
+                
+                // Remove duplicates
+                rubricData = rubricData.filter((rubric, index, self) =>
+                    index === self.findIndex(r => r.id === rubric.id)
+                );
+                
+                filterAndDisplayRubrics();
+                importModal.style.display = 'none';
+                saveToLocalStorage();
+                
+                let message = 'Import successful. ';
+                if (addedCount > 0) message += `${addedCount} new rubrics added. `;
+                if (updatedCount > 0) message += `${updatedCount} remedies updated in existing rubrics.`;
+                showNotification(message, 'success');
+            } catch (e) {
+                showNotification('Error parsing JSON data. Please check the format and try again.', 'error');
+                console.error(e);
+            }
+        }
+
+        // Show finalise modal with prescription summary
+        function showFinaliseModal() {
+            if (selectedRemedies.length === 0) {
+                showNotification('No remedies selected to finalise.', 'warning');
+                return;
+            }
+            
+            updateCurrentDate(); // Update the date in the modal
+            
+            let summaryHTML = '<div style="margin-bottom: 15px;"><strong>Selected Remedies:</strong></div>';
+            summaryHTML += '<ul style="margin-bottom: 15px; padding-left: 15px;">';
+            
+            selectedRemedies.forEach((remedy, index) => {
+                summaryHTML += `<li style="margin-bottom: 10px;">
+                    <div><strong>${remedy.name}</strong> (Grade: ${remedy.totalGrade})</div>
+                    <div style="font-size: 13px; margin: 5px 0 5px 10px;">`;
+                
+                // Combine potency, dosage and notes in one line
+                let details = [];
+                if (remedy.potency) details.push(`Potency: ${remedy.potency}`);
+                if (remedy.dosage) details.push(`Dosage: ${remedy.dosage}`);
+                if (remedy.note) details.push(`Notes: ${remedy.note}`);
+                
+                if (details.length > 0) {
+                    summaryHTML += details.join(' | ');
+                }
+                
+                summaryHTML += `</div>
+                    <div style="font-size: 12px; color: #666; margin-top: 3px;">
+                        <div>From rubrics:</div>
+                        <ul style="margin-top: 3px; padding-left: 15px;">`;
+                
+                remedy.rubrics.forEach((rubric, i) => {
+                    const bgClass = i % 5; // Cycle through 5 background colors
+                    summaryHTML += `<li class="rubric-bg-${bgClass}" style="padding: 3px; border-radius: 3px; margin-bottom: 2px;">${rubric}</li>`;
+                });
+                
+                summaryHTML += `</ul>
+                    </div>
+                </li>`;
+            });
+            
+            summaryHTML += '</ul>';
+            
+            prescriptionSummary.innerHTML = summaryHTML;
+            finaliseModal.style.display = 'block';
+        }
+function loadRubricFromPost(postUrl) {
+    fetch(postUrl)
+        .then(response => response.text())
+        .then(html => {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            const jsonScript = tempDiv.querySelector('#rubricDataJson');
+            if (jsonScript) {
+                try {
+                    const jsonData = JSON.parse(jsonScript.textContent);
+                    rubricData = jsonData;
+                    showNotification('Rubric data loaded from Blogger post', 'success');
+                    filterAndDisplayRubrics();
+                } catch (err) {
+                    console.error('Error parsing embedded JSON:', err);
+                    showNotification('Invalid rubric data format', 'error');
+                }
+            } else {
+                showNotification('Rubric data not found in post', 'error');
+            }
+        })
+        .catch(err => {
+            console.error('Failed to load post:', err);
+            showNotification('Failed to load rubric data from Blogger', 'error');
+        });
+}
+
+        // Initialize the app
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+  <div style="text-align: center; color: gray; font-size: 12px;">
+  © Paowerd By: Hdr Tahir Saleem ktk. Unauthorized copying is strictly prohibited.
+</div>
+</body>
+</html>
