@@ -1,5 +1,3 @@
-<script type="application/json" id="rubricDataJson">
-
 [
   {
     "id": "FEMALE__ABORTIONS__TENDENCY_TO",
@@ -28430,7 +28428,7 @@
   },
   {
     "id": "SLEEP__SLEEPLESSNESS__AFTER_DEPRESSION",
-    "name": "Sleep - Sleeplessness - after depression",
+    "name": "Sleep - Sleeplessness - after depres
     "remedies": [
       { "name": "Ignatia", "grade": 2 },
       { "name": "Natrum muriaticum", "grade": 2 }
@@ -28445,4 +28443,3 @@
     ]
   }
 ]
-</script>
